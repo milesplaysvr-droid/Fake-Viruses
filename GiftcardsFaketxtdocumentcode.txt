@@ -1,0 +1,43 @@
+@echo off
+timeout 5
+echo Generating Giftcard Codes . . .
+timeout 2
+echo Bypassing Errors . . .
+timeout 5
+echo Bypassing Input Codes . . .
+timeout 10
+echo Successfully Bypassed All Errors
+timeout 10
+echo Discord Fortnight Roblox Ready.
+timeout 10
+echo 1. Discord Nitro Codes :
+echo 2. Lz4Yx1Dq6Pj9Wm3Tn8Rk5S
+echo 3. Vg2Kp8Qw3Lx7S9fC4Jt1Hn
+echo 4. jR8pT1cL5zM2wX4bV9hQ7S
+echo 5. Wm6SxB1tR4qP8dK9nL3vF2J
+echo 6. Kp4QzN7xF1yR8tM3bL6sD2H
+echo 7. nT3ZrL8wXy4Hc9PqF2sJ6Mb
+echo 8. Qx7VbP2tL9kH4mZsD1pE6yW
+timeout 10
+echo Message : Codes Never Expire.
+echo Roblox Codes : 
+echo 1. 7F4Q-9L2M-T8B6
+echo 2. Q9XH-3P7D-L4W8
+echo 3. M2R7-Z8FQ-H5K1
+echo 4. B6NT-Q4V9-X7JP
+echo 5. WTZA-A1H8-0G81
+echo 6. T3KL-W9D2-P8SF
+echo 7. Q8NM-K6VR-W4D2
+echo 8. L1FH-T9CP-X3Q7
+echo 9. D6KR-Q2W9-M5ZT
+timeout 10
+echo Fortnight Codes : 
+echo 1. Y3LZ-F8CR-W1NP-K6TD
+echo 2. R5WN-K2MB-H7QT-X9VL
+echo 3. T8MQ-D4LS-J1RW-P7KF
+echo 4. K3HB-W9ZT-Q6PL-X2NR
+echo 5. Z6VF-T1KP-L9QM-R4SD
+echo 6. M7HC-R2QW-Y5TP-B8LK
+echo 7. Q4ND-X8TV-P3LZ-K9RW
+echo 8. F9KP-3LQ8-Z7RD-W2HM
+pause

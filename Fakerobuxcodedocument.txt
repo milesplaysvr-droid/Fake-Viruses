@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Robux Generator — (SIMULATION)</title>
+
+  <style>
+    :root{
+      --bg:#0b1220; --card:#0f1724; --accent:#ff6b6b; --muted:#99a3b2;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    body{
+      background:linear-gradient(120deg,#071026 0%,#081120 50%,#071218 100%);
+      color:#e6eef6; margin:0; min-height:100vh;
+      display:flex; align-items:center; justify-content:center; padding:24px;
+    }
+    .card{
+      width:460px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.05));
+      border-radius:16px; padding:20px; box-shadow:0 8px 30px rgba(2,6,23,0.6);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    h1{font-size:20px; margin:0 0 8px; display:flex; align-items:center; gap:8px;}
+    .warning{font-size:12px; color:var(--muted); margin-bottom:14px;}
+    label{font-size:13px; color:#cbe0ff; display:block; margin:10px 0 6px;}
+    input[type="text"], select{
+      width:100%; padding:10px 12px; border-radius:10px;
+      border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);
+      color:inherit; outline:none; font-size:14px;
+    }
+
+    .controls{display:flex; gap:10px; margin-top:14px;}
+    button{
+      flex:1; padding:10px 12px; border-radius:10px; border:0;
+      cursor:pointer; font-weight:600; box-shadow:0 6px 18px rgba(0,0,0,0.5);
+    }
+    .btn-generate{background:linear-gradient(90deg,var(--accent),#ff9b6b); color:#071218;}
+    .btn-reset{background:transparent; border:1px solid rgba(255,255,255,0.05); color:var(--muted);}
+    .btn-settings{background:#2a2a2a; color:#e6eef6; margin-top:10px; box-shadow:none;}
+
+    .output{
+      margin-top:16px; background:rgba(255,255,255,0.01); padding:12px;
+      border-radius:10px; min-height:64px;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:600; color:#d7f3ff;
+    }
+
+    .progress{
+      height:12px; background:rgba(255,255,255,0.03);
+      border-radius:8px; overflow:hidden; margin-top:12px;
+    }
+    .bar{height:100%; width:0%; background:linear-gradient(90deg,#6ee7b7,#60a5fa); transition:width 0.25s linear;}
+
+    .small{font-size:12px; color:var(--muted); margin-top:8px; text-align:center;}
+    footer{font-size:11px; color:var(--muted); margin-top:12px; text-align:center;}
+
+    .fake-badge{
+      background:rgba(255,255,255,0.03); padding:6px 8px;
+      border-radius:999px; font-size:11px; color:#ffdede;
+    }
+
+    .id-container{display:flex; flex-direction:column; gap:4px;}
+    .text-help{font-size:12px; color:#99a3b2;}
+    .error-text{color:#ff4d4d; font-size:13px; margin-top:4px; text-align:center;}
+
+    #settingsPanel{
+      display:none; margin-top:12px; padding:10px; background:rgba(255,255,255,0.02); border-radius:10px;
+    }
+    #settingsPanel label{font-size:13px; color:#cbe0ff; display:block; margin-top:5px;}
+    #themeSelect{margin-top:5px; width:100%; padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02); color:#e6eef6;}
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>Robux Generator <span class="fake-badge">SIMULATION</span></h1>
+
+    <div class="warning">Status: Experimental generator mode enabled.</div>
+
+    <label for="username">Roblox Username</label>
+    <input id="username" type="text" placeholder="Enter username">
+
+    <label for="nickname">Roblox Nickname</label>
+    <input id="nickname" type="text" placeholder="Enter Roblox Nickname">
+
+    <label for="userid">Roblox ID Number</label>
+    <div class="id-container">
+      <input id="userid" type="text" placeholder="Enter User ID (safe, no leak)">
+      <div class="text-help">
+        <strong>Text Help:</strong> Need help? Getting Roblox ID → Go to your Roblox Profile and look at the address bar. Copy the numbers and paste them into the field above.
+      </div>
+    </div>
+
+    <div id="errorMsg" class="error-text" style="display:none;">These fields must be filled out.</div>
+
+    <label for="amount">Amount of Robux</label>
+    <select id="amount">
+      <option value="0">0 Robux (Not Recommended)</option>
+      <option value="999">999 Robux</option>
+      <option value="99999">99,999 Robux</option>
+      <option value="999999999">Max Limit Robux</option>
+    </select>
+
+    <div class="controls">
+      <button id="generate" class="btn-generate">Generate (SIM)</button>
+      <button id="reset" class="btn-reset">Reset</button>
+    </div>
+
+    <button id="settingsBtn" class="btn-settings">Settings ⚙️</button>
+    <div id="settingsPanel">
+      <label><input type="checkbox" id="fastMode"> Fast Generation Mode</label>
+      <label>UI Theme Color</label>
+      <select id="themeSelect">
+        <option value="default">Default</option>
+        <option value="blue">Blue</option>
+        <option value="green">Green</option>
+        <option value="red">Red</option>
+        <option value="gray">Gray</option>
+      </select>
+    </div>
+
+    <div class="progress"><div id="bar" class="bar"></div></div>
+    <div class="output" id="output">Ready — simulation only.</div>
+
+    <!-- VERIFICATION BOX -->
+    <div id="verifyBox" style="
+      margin-top:15px; padding:12px;
+      background:rgba(255,255,255,0.03); border-radius:10px; text-align:center;
+      display:none;
+    ">
+      <div id="verifyText" style="margin-bottom:10px;">
+        Verification Required: Click the button 5 times.
+      </div>
+      <button id="verifyBtn" style="
+        padding:8px 14px; border:0; border-radius:8px;
+        background:#4ade80; cursor:pointer; font-weight:600;
+      ">
+        Verify
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    const generateBtn = document.getElementById('generate');
+    const resetBtn    = document.getElementById('reset');
+    const bar         = document.getElementById('bar');
+    const output      = document.getElementById('output');
+    const username    = document.getElementById('username');
+    const nickname    = document.getElementById('nickname');
+    const userId      = document.getElementById('userid');
+    const amountSel   = document.getElementById('amount');
+    const errorMsg    = document.getElementById('errorMsg');
+
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsPanel = document.getElementById('settingsPanel');
+    const fastMode = document.getElementById('fastMode');
+    const themeSelect = document.getElementById('themeSelect');
+
+    const verifyBox   = document.getElementById('verifyBox');
+    const verifyBtn   = document.getElementById('verifyBtn');
+    const verifyText  = document.getElementById('verifyText');
+
+    let verifyClicks = 0;
+
+    function wait(ms){ return new Promise(r => setTimeout(r, ms)); }
+
+    // Settings toggle
+    settingsBtn.onclick = () => {
+      settingsPanel.style.display = settingsPanel.style.display === "none" ? "block" : "none";
+    };
+
+    // Theme change
+    themeSelect.onchange = () => {
+      const root = document.documentElement;
+      switch(themeSelect.value){
+        case 'blue': root.style.setProperty('--bg','#0d1b2a'); root.style.setProperty('--card','#1b263b'); root.style.setProperty('--accent','#1d4ed8'); break;
+        case 'green': root.style.setProperty('--bg','#0b2f0b'); root.style.setProperty('--card','#1c3b1c'); root.style.setProperty('--accent','#28a745'); break;
+        case 'red': root.style.setProperty('--bg','#2a0b0b'); root.style.setProperty('--card','#3b1c1c'); root.style.setProperty('--accent','#dc3545'); break;
+        case 'gray': root.style.setProperty('--bg','#1a1a1a'); root.style.setProperty('--card','#2c2c2c'); root.style.setProperty('--accent','#6c757d'); break;
+        default: root.style.setProperty('--bg','#0b1220'); root.style.setProperty('--card','#0f1724'); root.style.setProperty('--accent','#ff6b6b');
+      }
+    };
+
+    function startVerification() {
+      verifyClicks = 0;
+      verifyText.textContent = "Verification Required: Click the button 5 times.";
+      verifyBox.style.display = "block";
+    }
+
+    verifyBtn.addEventListener("click", () => {
+      verifyClicks++;
+      if (verifyClicks < 5) {
+        verifyText.textContent = `Progress: ${verifyClicks}/5`;
+      } else {
+        verifyText.textContent = "Verification Complete ✔";
+        setTimeout(() => {
+          verifyBox.style.display = "none";
+          finishGenerator();
+        }, 800);
+      }
+    });
+
+    async function finishGenerator() {
+      const user = username.value.trim() || "UnknownPlayer";
+      const nick = nickname.value.trim() || "NoNickname";
+      const amount = parseInt(amountSel.value);
+
+      output.textContent = "Finishing up…";
+      bar.style.width = "98%";
+      await wait(fastMode.checked ? 400 : 700);
+
+      bar.style.width = "100%";
+      output.innerHTML =
+        `<span style="color:#b8ffd6">SUCCESS (simulated)</span><br>
+         Username: ${user}<br>
+         Nickname: ${nick}<br>
+         ${user} has received <strong>${amount.toLocaleString()}</strong> Robux (simulation only).`;
+    }
+
+    generateBtn.addEventListener("click", async () => {
+      errorMsg.style.display = "none";
+
+      if (!username.value.trim() || !nickname.value.trim() || !userId.value.trim()) {
+        errorMsg.style.display = "block";
+        return;
+      }
+
+      const user = username.value.trim() || "UnknownPlayer";
+      output.textContent = `Starting simulation for ${user}…`;
+      bar.style.width = "0%";
+
+      for (let i = 1; i <= 5; i++) {
+        bar.style.width = `${i * 18}%`;
+        output.textContent = `Processing step ${i}/5…`;
+        await wait(fastMode.checked ? 200 + Math.random() * 200 : 400 + Math.random() * 400);
+      }
+
+      startVerification();
+    });
+
+    resetBtn.addEventListener("click", () => {
+      username.value = "";
+      nickname.value = "";
+      userId.value = "";
+      amountSel.value = "0";
+      bar.style.width = "0%";
+      output.textContent = "Ready — simulation only.";
+      verifyBox.style.display = "none";
+      errorMsg.style.display = "none";
+      fastMode.checked = false;
+      themeSelect.value = "default";
+      document.documentElement.style.setProperty('--bg','#0b1220');
+      document.documentElement.style.setProperty('--card','#0f1724');
+      document.documentElement.style.setProperty('--accent','#ff6b6b');
+    });
+  </script>
+
+</body>
+</html>
